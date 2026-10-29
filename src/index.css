@@ -1,0 +1,183 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/inter';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+
+  --color-cream: #f7f2e7;
+  --color-cream-deep: #ede5d5;
+  --color-forest: #1e3a2b;
+  --color-forest-deep: #10221a;
+  --color-moss: #4c6551;
+  --color-sage: #a9b8a0;
+  --color-sage-light: #dee5d7;
+  --color-clay: #b5643f;
+  --color-clay-deep: #8a4327;
+  --color-clay-light: #dca98e;
+  --color-ink: #1b271f;
+  --color-stone: #5f6a5c;
+  --color-line: #dbd3c4;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-4xl: 2rem;
+  --radius-5xl: 2.75rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-normal;
+    font-variation-settings: 'SOFT' 0, 'WONK' 0;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    @apply bg-clay text-white;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+  }
+
+  section[id] {
+    scroll-margin-top: 7.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply relative inline-flex items-center py-2 text-sm font-medium text-forest/75 transition-colors duration-200 hover:text-forest;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0.25rem;
+    left: 0;
+    height: 1px;
+    background: var(--color-clay);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s var(--ease-out-soft);
+  }
+
+  .nav-link:hover::after,
+  .nav-link[data-active='true']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .nav-link[data-active='true'] {
+    @apply text-forest;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s var(--ease-out-soft),
+      transform 0.7s var(--ease-out-soft);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .texture-grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .texture-grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.28;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+    mix-blend-mode: soft-light;
+  }
+
+  .animate-fade {
+    animation: fade-in 0.25s ease both;
+  }
+
+  .animate-dialog {
+    animation: dialog-in 0.35s var(--ease-out-soft) both;
+  }
+
+  .animate-menu {
+    animation: menu-in 0.25s var(--ease-out-soft) both;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl border border-line bg-white/70 px-4 py-3 text-base text-ink shadow-[0_1px_0_rgba(27,39,31,0.03)] transition duration-200 placeholder:text-stone/55 hover:border-stone/40 focus:border-forest focus:bg-white focus:ring-2 focus:ring-forest/15 focus:outline-none;
+  }
+
+  .field-input[aria-invalid='true'] {
+    @apply border-clay-deep/70 bg-clay/[0.03] focus:border-clay-deep focus:ring-clay/15;
+  }
+
+  input[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
